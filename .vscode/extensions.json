@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "eamodio.gitlens",
+    "ryannaddy.laravel-artisan",
+    "winnielin.laravel-blade-snippets",
+    "bmewburn.vscode-intelephense-client",
+    "ms-vscode.remote-explorer",
+    "ms-vscode-remote.remote-ssh",
+    "ms-vscode-remote.remote-ssh-edit"
+  ]
+}

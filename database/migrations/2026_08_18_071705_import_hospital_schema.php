@@ -11,8 +11,8 @@ return new class extends Migration
         $sqlPath = database_path('sql/hospital.sql');
 
         // เช็คก่อนว่าไฟล์มีอยู่จริง
-        if (!file_exists($sqlPath)) {
-            throw new \Exception("ไม่พบไฟล์ hospital.sql ใน database/sql/");
+        if (! file_exists($sqlPath)) {
+            throw new Exception('ไม่พบไฟล์ hospital.sql ใน database/sql/');
         }
 
         // อ่านเนื้อหาไฟล์

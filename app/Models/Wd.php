@@ -21,8 +21,8 @@ class Wd extends Model
         'Wd_No', 'Wd_Name', 'Location', 'TotalBeds', 'TelExtension',
     ];
 
-    public function allocations(): HasMany
+    public function rotas(): HasMany
     {
-        return $this->hasMany(StfWd::class, 'Wd_No', 'Wd_No');
+        return $this->hasMany(StfRota::class, 'Wd_No', 'Wd_No');
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Stf;
-use App\Models\StfWd;
+use App\Models\StfRota;
 use App\Models\Wd;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -14,8 +14,8 @@ class AllocationController extends Controller
 {
     public function index(): View
     {
-        $allocations = StfWd::with(['stf', 'wd'])
-            ->orderByDesc('Date')
+        $allocations = StfRota::with(['stf', 'wd'])
+            ->orderByDesc('WkBegin')
             ->limit(100)
             ->get();
 
@@ -30,12 +30,12 @@ class AllocationController extends Controller
         $data = $request->validate([
             'Stf_No' => ['required', 'exists:Stf,Stf_No'],
             'Wd_No' => ['required', 'exists:Wd,Wd_No'],
-            'Date' => ['required', 'date'],
+            'WkBegin' => ['required', 'date'],
             'Shift' => ['required', 'in:Morning,Evening,Night'],
         ]);
 
-        StfWd::create([
-            'StfWd_No' => 'ALLOC-'.Str::upper(Str::random(8)),
+        StfRota::create([
+            'StfRota_No' => 'R'.Str::upper(Str::random(9)),
             ...$data,
         ]);
 
@@ -43,7 +43,7 @@ class AllocationController extends Controller
             ->with('status', 'Allocation recorded.');
     }
 
-    public function destroy(StfWd $allocation): RedirectResponse
+    public function destroy(StfRota $allocation): RedirectResponse
     {
         $allocation->delete();
 

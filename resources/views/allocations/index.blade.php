@@ -4,9 +4,10 @@
 
 @section('content')
     <div class="mb-6">
-        <h1 class="text-2xl font-bold text-slate-900">Ward allocations</h1>
+        <h1 class="text-2xl font-bold text-slate-900">Ward allocations (rota)</h1>
         <p class="mt-1 text-sm text-slate-500">
-            Assign a staff member to a ward for a dated shift. Used by the <a href="{{ route('wards.report') }}" class="text-sky-600 hover:underline">ward report</a>.
+            Assign a staff member to a ward for a week starting on a given date (shift-based roster).
+            Used by the <a href="{{ route('wards.report') }}" class="text-sky-600 hover:underline">ward report</a>.
         </p>
     </div>
 
@@ -37,8 +38,8 @@
                 </select>
             </div>
             <div>
-                <label for="Date" class="block text-sm font-medium text-slate-700">Date *</label>
-                <input type="date" id="Date" name="Date" value="{{ old('Date', today()->toDateString()) }}"
+                <label for="WkBegin" class="block text-sm font-medium text-slate-700">Week beginning *</label>
+                <input type="date" id="WkBegin" name="WkBegin" value="{{ old('WkBegin', today()->startOfWeek()->toDateString()) }}"
                        class="mt-1 w-full rounded border border-slate-300 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none">
             </div>
             <div>
@@ -61,7 +62,7 @@
         <table class="min-w-full divide-y divide-slate-200 text-sm">
             <thead class="bg-slate-50">
                 <tr class="text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-                    <th class="px-4 py-3">Date</th>
+                    <th class="px-4 py-3">Week beginning</th>
                     <th class="px-4 py-3">Shift</th>
                     <th class="px-4 py-3">Staff</th>
                     <th class="px-4 py-3">Ward</th>
@@ -71,7 +72,7 @@
             <tbody class="divide-y divide-slate-100">
                 @forelse ($allocations as $alloc)
                     <tr>
-                        <td class="px-4 py-3 whitespace-nowrap">{{ $alloc->Date->format('d M Y') }}</td>
+                        <td class="px-4 py-3 whitespace-nowrap">{{ $alloc->WkBegin?->format('d M Y') }}</td>
                         <td class="px-4 py-3">{{ $alloc->Shift }}</td>
                         <td class="px-4 py-3">
                             {{ $alloc->stf->full_name ?? 'Deleted staff' }}

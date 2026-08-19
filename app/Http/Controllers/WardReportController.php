@@ -10,15 +10,15 @@ class WardReportController extends Controller
 {
     public function show(Request $request): View
     {
-        $date = $request->validate(['date' => ['nullable', 'date']])['date'] ?? null;
+        $weekBeginning = $request->validate(['date' => ['nullable', 'date']])['date'] ?? null;
 
-        $wards = Wd::with(['allocations' => function ($query) use ($date) {
-            $query->when($date, fn ($q) => $q->whereDate('Date', $date))
-                ->with(['stf.positions.pos']);
+        $wards = Wd::with(['rotas' => function ($query) use ($weekBeginning) {
+            $query->when($weekBeginning, fn ($q) => $q->whereDate('WkBegin', $weekBeginning))
+                ->with(['stf.positions.pos', 'stf.assignedWard']);
         }])
             ->orderBy('Wd_Name')
             ->get();
 
-        return view('wards.report', compact('wards', 'date'));
+        return view('wards.report', compact('wards', 'weekBeginning'));
     }
 }

@@ -10,10 +10,10 @@ return new class extends Migration
     {
         Schema::create('Wd', function (Blueprint $table) {
             $table->string('Wd_No', 10)->primary();
-            $table->string('Wd_Name', 50);
-            $table->string('Location', 50);
-            $table->integer('TotalBeds');
-            $table->string('TelExtension', 10);
+            $table->string('Wd_Name', 50)->nullable();
+            $table->string('Location', 50)->nullable();
+            $table->integer('TotalBeds')->nullable();
+            $table->string('TelExtension', 10)->nullable();
         });
     }
 

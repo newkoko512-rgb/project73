@@ -24,6 +24,7 @@
                     <th class="px-4 py-3">No</th>
                     <th class="px-4 py-3">Name</th>
                     <th class="px-4 py-3">Position(s)</th>
+                    <th class="px-4 py-3">Assigned ward</th>
                     <th class="px-4 py-3">Qualifications</th>
                     <th class="px-4 py-3">Contact</th>
                     <th class="px-4 py-3"></th>
@@ -42,6 +43,15 @@
                             @empty
                                 <span class="text-slate-400">&mdash;</span>
                             @endforelse
+                        </td>
+                        <td class="px-4 py-3">
+                            @if ($member->assignedWard)
+                                <span class="rounded bg-cyan-50 px-2 py-0.5 text-xs text-cyan-700">
+                                    {{ $member->assignedWard->Wd_Name }}
+                                </span>
+                            @else
+                                <span class="text-slate-400">&mdash;</span>
+                            @endif
                         </td>
                         <td class="px-4 py-3">
                             @forelse ($member->qualifications as $q)
@@ -67,7 +77,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="px-4 py-10 text-center text-slate-400">
+                        <td colspan="7" class="px-4 py-10 text-center text-slate-400">
                             No staff records yet.
                             <a href="{{ route('staff.create') }}" class="text-sky-600 hover:underline">Add the first one</a>.
                         </td>

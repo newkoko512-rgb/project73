@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\Stf;
 use App\Models\StfPos;
 use App\Models\StfQual;
-use App\Models\StfWd;
+use App\Models\StfRota;
 use App\Models\StfWorkExp;
 use Illuminate\Database\Seeder;
 
@@ -23,6 +23,7 @@ class StaffSeeder extends Seeder
                 'DOB' => '1988-04-12',
                 'Sex' => 'F',
                 'NIN' => 'AB123456C',
+                'Alloc_Wd_No' => 'WD01',
                 'positions' => [
                     ['Pos_No' => 'P001', 'CurrSalary' => 32000, 'HrsPerWk' => 37.5, 'ContractType' => 'Permanent', 'PaymentType' => 'Monthly'],
                 ],
@@ -43,6 +44,7 @@ class StaffSeeder extends Seeder
                 'DOB' => '1975-09-03',
                 'Sex' => 'M',
                 'NIN' => 'CD789012E',
+                'Alloc_Wd_No' => 'WD03',
                 'positions' => [
                     ['Pos_No' => 'P003', 'CurrSalary' => 85000, 'HrsPerWk' => 40, 'ContractType' => 'Permanent', 'PaymentType' => 'Monthly'],
                 ],
@@ -63,6 +65,7 @@ class StaffSeeder extends Seeder
                 'DOB' => '1992-11-22',
                 'Sex' => 'F',
                 'NIN' => 'EF345678G',
+                'Alloc_Wd_No' => 'WD01',
                 'positions' => [
                     ['Pos_No' => 'P002', 'CurrSalary' => 38000, 'HrsPerWk' => 37.5, 'ContractType' => 'Permanent', 'PaymentType' => 'Monthly'],
                 ],
@@ -83,6 +86,7 @@ class StaffSeeder extends Seeder
                 'DOB' => '1984-01-30',
                 'Sex' => 'M',
                 'NIN' => 'GH901234J',
+                'Alloc_Wd_No' => 'WD04',
                 'positions' => [
                     ['Pos_No' => 'P006', 'CurrSalary' => 28000, 'HrsPerWk' => 35, 'ContractType' => 'Permanent', 'PaymentType' => 'Monthly'],
                 ],
@@ -102,6 +106,7 @@ class StaffSeeder extends Seeder
                 'DOB' => '1995-07-18',
                 'Sex' => 'F',
                 'NIN' => 'JK567890L',
+                'Alloc_Wd_No' => 'WD02',
                 'positions' => [
                     ['Pos_No' => 'P005', 'CurrSalary' => 24000, 'HrsPerWk' => 37.5, 'ContractType' => 'Permanent', 'PaymentType' => 'Monthly'],
                 ],
@@ -122,30 +127,30 @@ class StaffSeeder extends Seeder
             StfWorkExp::where('Stf_No', $member->Stf_No)->delete();
 
             foreach ($record['positions'] as $i => $pos) {
-                StfPos::create(['StfPos_No' => "SP{$member->Stf_No}-{$i}", 'Stf_No' => $member->Stf_No, ...$pos]);
+                StfPos::create(['StfPos_No' => "SP{$member->Stf_No}{$i}", 'Stf_No' => $member->Stf_No, ...$pos]);
             }
 
             foreach ($record['qualifications'] as $i => $qual) {
-                StfQual::create(['Qual_No' => "Q{$member->Stf_No}-{$i}", 'Stf_No' => $member->Stf_No, ...$qual]);
+                StfQual::create(['Qual_No' => "Q{$member->Stf_No}{$i}", 'Stf_No' => $member->Stf_No, ...$qual]);
             }
 
             foreach ($record['experiences'] as $i => $exp) {
-                StfWorkExp::create(['WorkExp_No' => "E{$member->Stf_No}-{$i}", 'Stf_No' => $member->Stf_No, ...$exp]);
+                StfWorkExp::create(['WorkExp_No' => "E{$member->Stf_No}{$i}", 'Stf_No' => $member->Stf_No, ...$exp]);
             }
         }
 
-        $allocations = [
-            ['Stf_No' => 'S1001', 'Wd_No' => 'WD01', 'Date' => today()->toDateString(), 'Shift' => 'Morning'],
-            ['Stf_No' => 'S1003', 'Wd_No' => 'WD01', 'Date' => today()->toDateString(), 'Shift' => 'Evening'],
-            ['Stf_No' => 'S1002', 'Wd_No' => 'WD03', 'Date' => today()->toDateString(), 'Shift' => 'Night'],
-            ['Stf_No' => 'S1001', 'Wd_No' => 'WD02', 'Date' => today()->addDay()->toDateString(), 'Shift' => 'Night'],
-            ['Stf_No' => 'S1005', 'Wd_No' => 'WD02', 'Date' => today()->toDateString(), 'Shift' => 'Morning'],
+        $rotas = [
+            ['Stf_No' => 'S1001', 'Wd_No' => 'WD01', 'WkBegin' => today()->startOfWeek()->toDateString(), 'Shift' => 'Morning'],
+            ['Stf_No' => 'S1003', 'Wd_No' => 'WD01', 'WkBegin' => today()->startOfWeek()->toDateString(), 'Shift' => 'Evening'],
+            ['Stf_No' => 'S1002', 'Wd_No' => 'WD03', 'WkBegin' => today()->startOfWeek()->toDateString(), 'Shift' => 'Night'],
+            ['Stf_No' => 'S1001', 'Wd_No' => 'WD02', 'WkBegin' => today()->startOfWeek()->addWeek()->toDateString(), 'Shift' => 'Night'],
+            ['Stf_No' => 'S1005', 'Wd_No' => 'WD02', 'WkBegin' => today()->startOfWeek()->toDateString(), 'Shift' => 'Morning'],
         ];
 
-        foreach ($allocations as $alloc) {
-            StfWd::firstOrCreate(
-                ['Stf_No' => $alloc['Stf_No'], 'Wd_No' => $alloc['Wd_No'], 'Date' => $alloc['Date'], 'Shift' => $alloc['Shift']],
-                ['StfWd_No' => 'ALLOC-'.strtoupper(uniqid())],
+        foreach ($rotas as $rota) {
+            StfRota::firstOrCreate(
+                ['Stf_No' => $rota['Stf_No'], 'Wd_No' => $rota['Wd_No'], 'WkBegin' => $rota['WkBegin'], 'Shift' => $rota['Shift']],
+                ['StfRota_No' => 'R'.strtoupper(substr(uniqid(), -9))],
             );
         }
     }

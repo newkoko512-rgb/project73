@@ -22,7 +22,7 @@ class StaffSearchController extends Controller
             'experience_position' => ['nullable', 'string', 'max:255'],
         ]);
 
-        $query = Stf::with(['qualifications', 'workExperiences', 'positions.pos']);
+        $query = Stf::with(['qualifications', 'workExperiences', 'positions.pos', 'assignedWard']);
 
         if (! empty($data['qualification'])) {
             $query->whereHas('qualifications', fn ($q) => $q->where('Type', 'like', '%'.$data['qualification'].'%'));

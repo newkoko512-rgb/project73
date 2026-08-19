@@ -57,8 +57,20 @@
                     <select id="Sex" name="Sex"
                             class="mt-1 w-full rounded border border-slate-300 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none">
                         <option value="">&mdash;</option>
-                        @foreach (['M', 'F', 'Other'] as $sex)
+                        @foreach (['M', 'F'] as $sex)
                             <option value="{{ $sex }}" @selected(old('Sex', $staff->Sex) === $sex)>{{ $sex }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <label for="Alloc_Wd_No" class="block text-sm font-medium text-slate-700">Assigned ward</label>
+                    <select id="Alloc_Wd_No" name="Alloc_Wd_No"
+                            class="mt-1 w-full rounded border border-slate-300 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none">
+                        <option value="">&mdash; none &mdash;</option>
+                        @foreach ($wards as $ward)
+                            <option value="{{ $ward->Wd_No }}" @selected(old('Alloc_Wd_No', $staff->Alloc_Wd_No) === $ward->Wd_No)>
+                                {{ $ward->Wd_Name }} ({{ $ward->Wd_No }})
+                            </option>
                         @endforeach
                     </select>
                 </div>

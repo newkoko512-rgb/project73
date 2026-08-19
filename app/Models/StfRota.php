@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class StfWd extends Model
+class StfRota extends Model
 {
-    protected $table = 'StfWd';
+    protected $table = 'StfRota';
 
-    protected $primaryKey = 'StfWd_No';
+    protected $primaryKey = 'StfRota_No';
 
     public $incrementing = false;
 
@@ -18,11 +18,11 @@ class StfWd extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'StfWd_No', 'Stf_No', 'Wd_No', 'Date', 'Shift',
+        'StfRota_No', 'Stf_No', 'Wd_No', 'WkBegin', 'Shift',
     ];
 
     protected $casts = [
-        'Date' => 'date',
+        'WkBegin' => 'date',
     ];
 
     public function stf(): BelongsTo

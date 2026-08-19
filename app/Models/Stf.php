@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Stf extends Model
@@ -21,7 +22,7 @@ class Stf extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'Stf_No', 'FirstName', 'LastName', 'Address', 'TelNo', 'DOB', 'Sex', 'NIN',
+        'Stf_No', 'FirstName', 'LastName', 'Address', 'TelNo', 'DOB', 'Sex', 'NIN', 'Alloc_Wd_No',
     ];
 
     protected $casts = [
@@ -48,8 +49,13 @@ class Stf extends Model
         return $this->hasMany(StfWorkExp::class, 'Stf_No', 'Stf_No');
     }
 
-    public function allocations(): HasMany
+    public function assignedWard(): BelongsTo
     {
-        return $this->hasMany(StfWd::class, 'Stf_No', 'Stf_No');
+        return $this->belongsTo(Wd::class, 'Alloc_Wd_No', 'Wd_No');
+    }
+
+    public function rotas(): HasMany
+    {
+        return $this->hasMany(StfRota::class, 'Stf_No', 'Stf_No');
     }
 }

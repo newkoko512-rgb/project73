@@ -7,6 +7,7 @@ use App\Models\Stf;
 use App\Models\StfPos;
 use App\Models\StfQual;
 use App\Models\StfWorkExp;
+use App\Models\Wd;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -16,7 +17,7 @@ class StaffController extends Controller
 {
     public function index(): View
     {
-        $staff = Stf::with(['positions.pos', 'qualifications', 'workExperiences'])
+        $staff = Stf::with(['positions.pos', 'qualifications', 'workExperiences', 'assignedWard'])
             ->orderBy('LastName')
             ->orderBy('FirstName')
             ->paginate(15);
@@ -27,8 +28,9 @@ class StaffController extends Controller
     public function create(): View
     {
         $positions = Pos::orderBy('Pos_Name')->get();
+        $wards = Wd::orderBy('Wd_Name')->get();
 
-        return view('staff.form', ['staff' => new Stf, 'positions' => $positions]);
+        return view('staff.form', ['staff' => new Stf, 'positions' => $positions, 'wards' => $wards]);
     }
 
     public function store(Request $request): RedirectResponse
@@ -45,11 +47,12 @@ class StaffController extends Controller
 
     public function edit(Stf $staff): View
     {
-        $staff->load(['qualifications', 'workExperiences', 'positions.pos']);
+        $staff->load(['qualifications', 'workExperiences', 'positions.pos', 'assignedWard']);
 
         $positions = Pos::orderBy('Pos_Name')->get();
+        $wards = Wd::orderBy('Wd_Name')->get();
 
-        return view('staff.form', compact('staff', 'positions'));
+        return view('staff.form', compact('staff', 'positions', 'wards'));
     }
 
     public function update(Request $request, Stf $staff): RedirectResponse
@@ -68,6 +71,10 @@ class StaffController extends Controller
     {
         $name = $staff->full_name;
 
+        $staff->qualifications()->delete();
+        $staff->workExperiences()->delete();
+        $staff->positions()->delete();
+        $staff->rotas()->delete();
         $staff->delete();
 
         return redirect()->route('staff.index')
@@ -77,14 +84,15 @@ class StaffController extends Controller
     protected function validateStaff(Request $request): array
     {
         return $request->validate([
-            'Stf_No' => ['required', 'string', 'max:255'],
-            'FirstName' => ['required', 'string', 'max:255'],
-            'LastName' => ['required', 'string', 'max:255'],
-            'Address' => ['nullable', 'string', 'max:255'],
-            'TelNo' => ['nullable', 'string', 'max:255'],
+            'Stf_No' => ['required', 'string', 'max:10'],
+            'FirstName' => ['required', 'string', 'max:50'],
+            'LastName' => ['required', 'string', 'max:50'],
+            'Address' => ['nullable', 'string', 'max:150'],
+            'TelNo' => ['nullable', 'string', 'max:15'],
             'DOB' => ['nullable', 'date'],
-            'Sex' => ['nullable', 'string', 'max:255'],
-            'NIN' => ['nullable', 'string', 'max:255'],
+            'Sex' => ['nullable', 'string', 'max:1'],
+            'NIN' => ['nullable', 'string', 'max:13'],
+            'Alloc_Wd_No' => ['nullable', 'exists:Wd,Wd_No'],
         ]);
     }
 
@@ -101,7 +109,7 @@ class StaffController extends Controller
             }
 
             StfQual::create([
-                'Qual_No' => ($row['Qual_No'] ?? '') ?: 'QUAL-'.Str::upper(Str::random(8)),
+                'Qual_No' => ($row['Qual_No'] ?? '') ?: 'Q'.Str::upper(Str::random(9)),
                 'Stf_No' => $staff->Stf_No,
                 'Type' => $row['Type'] ?? null,
                 'QualDate' => $row['QualDate'] ?? null,
@@ -115,7 +123,7 @@ class StaffController extends Controller
             }
 
             StfWorkExp::create([
-                'WorkExp_No' => ($row['WorkExp_No'] ?? '') ?: 'EXP-'.Str::upper(Str::random(8)),
+                'WorkExp_No' => ($row['WorkExp_No'] ?? '') ?: 'E'.Str::upper(Str::random(9)),
                 'Stf_No' => $staff->Stf_No,
                 'Organization' => $row['Organization'] ?? null,
                 'Position' => $row['Position'] ?? null,
@@ -130,7 +138,7 @@ class StaffController extends Controller
             }
 
             StfPos::create([
-                'StfPos_No' => ($row['StfPos_No'] ?? '') ?: 'POS-'.Str::upper(Str::random(8)),
+                'StfPos_No' => ($row['StfPos_No'] ?? '') ?: 'P'.Str::upper(Str::random(9)),
                 'Stf_No' => $staff->Stf_No,
                 'Pos_No' => $row['Pos_No'],
                 'CurrSalary' => $row['CurrSalary'] ?? null,

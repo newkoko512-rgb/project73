@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="mb-6">
-        <h1 class="text-2xl font-bold text-slate-900">Search staff</h1>
+        <h1 class="text-2xl font-bold text-[#112D6E]">Search staff</h1>
         <p class="mt-1 text-sm text-slate-500">
             Find staff by qualification or previous work experience. Leave a field blank to ignore it.
         </p>
@@ -39,7 +39,7 @@
             </div>
         </div>
         <div class="mt-4 flex gap-3">
-            <button type="submit" class="rounded bg-sky-600 px-6 py-2 text-sm font-medium text-white hover:bg-sky-700">
+            <button type="submit" class="rounded bg-[#112D6E] px-6 py-2 text-sm font-medium text-white hover:bg-sky-700">
                 Search
             </button>
             <a href="{{ route('staff.search') }}" class="px-4 py-2 text-sm text-slate-600 hover:text-slate-900">Clear</a>

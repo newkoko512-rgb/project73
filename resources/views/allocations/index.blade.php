@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="mb-6">
-        <h1 class="text-2xl font-bold text-slate-900">Ward allocations (rota)</h1>
+        <h1 class="text-2xl font-bold text-[#112D6E]">Ward allocations (rota)</h1>
         <p class="mt-1 text-sm text-slate-500">
             Assign a staff member to a ward for a week starting on a given date (shift-based roster).
             Used by the <a href="{{ route('wards.report') }}" class="text-sky-600 hover:underline">ward report</a>.
@@ -51,8 +51,8 @@
                 </select>
             </div>
             <div class="md:col-span-4">
-                <button type="submit" class="rounded bg-sky-600 px-6 py-2 text-sm font-medium text-white hover:bg-sky-700">
-                    Add allocation
+                <button type="submit" class="rounded bg-[#112D6E] px-6 py-2 text-sm font-medium text-white hover:bg-sky-700">
+                + Add allocation
                 </button>
             </div>
         </form>

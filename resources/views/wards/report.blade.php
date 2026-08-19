@@ -5,7 +5,7 @@
 @section('content')
     <div class="mb-6 flex flex-wrap items-center justify-between gap-4">
         <div>
-            <h1 class="text-2xl font-bold text-slate-900">Staff allocated per ward</h1>
+            <h1 class="text-2xl font-bold text-[#112D6E]">Staff allocated per ward</h1>
             <p class="mt-1 text-sm text-slate-500">
                 Shift roster allocations (StfRota) and each staff member's primary ward.
             </p>
@@ -17,7 +17,7 @@
                 <input type="date" id="date" name="date" value="{{ $weekBeginning ?? '' }}"
                        class="mt-1 rounded border border-slate-300 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none">
             </div>
-            <button type="submit" class="rounded bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-700">
+            <button type="submit" class="rounded bg-[#112D6E] px-4 py-2 text-sm font-medium text-white hover:bg-sky-700">
                 Filter
             </button>
             @if (!empty($weekBeginning))
